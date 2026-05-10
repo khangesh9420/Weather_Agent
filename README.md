@@ -1,74 +1,283 @@
-# Weather Agent — LangGraph + Gemini, built on Flyte
+# Weather Agent — LangGraph + Gemini + Flyte
 
-An AI agent that answers weather queries using a LangGraph state machine
-and Google's Gemini API. Built and run inside a Flyte Devbox environment.
+An AI-powered weather assistant built using:
 
-## What is this?
-A simple agentic workflow that demonstrates the core pattern of modern AI
-agents: an LLM that can decide when to call a tool, execute it, and
-incorporate the result into its final answer.
+- LangGraph
+- Google Gemini API
+- Flyte
 
-## Why Flyte Devbox?
-Flyte Devbox provides a ready-to-use cloud development environment with
-the dependencies, GPU access, and isolation needed for AI workflows —
-no local setup overhead.
+This project demonstrates how to build an agentic workflow where an LLM can:
+- understand user intent
+- decide when to call tools
+- execute external APIs
+- return natural-language answers
 
-## Project Structure
+The agent runs inside a local Flyte Devbox environment and uses real weather data from Open-Meteo APIs.
+
+---
+
+# Features
+
+- LangGraph StateGraph workflow orchestration
+- Gemini tool-calling support
+- Real weather forecasting API integration
+- Dynamic city geocoding
+- Modular production-style architecture
+- Flyte task execution support
+- Dockerized Flyte runtime builds
+- Environment variable + Flyte secret support
+
+---
+
+# Project Structure
+
+```text
 .
 ├── graph/
-│   ├── nodes.py            # LLM node and tool routing logic
-│   └── workflow.py         # LangGraph StateGraph definition
+│   ├── nodes.py
+│   └── workflow.py
+│
 ├── tools/
-│   └── weather_tool.py     # Weather lookup function exposed as a tool
+│   └── weather_tool.py
+│
 ├── utils/
-│   └── helpers.py          # Shared helpers
-├── main.py                 # Entry point — invokes the compiled graph
-└── requirements.txt
+│   └── helpers.py
+│
+├── main.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
 
-## Prerequisites
+---
+
+# How It Works
+
+1. User submits a query:
+
+```text
+weather in Berlin
+```
+
+2. LangGraph sends the request to Gemini
+
+3. Gemini decides whether the weather tool is required
+
+4. If needed, the tool:
+   - geocodes the city
+   - fetches weather data
+   - returns structured forecast data
+
+5. Gemini generates the final natural-language response
+
+---
+
+# Tech Stack
+
+| Component | Purpose |
+|---|---|
+| LangGraph | Agent workflow orchestration |
+| Gemini 2.5 Flash | LLM + tool calling |
+| Flyte | Task orchestration/runtime |
+| Open-Meteo API | Weather data |
+| Python 3.12 | Runtime |
+
+---
+
+# Prerequisites
+
+Install:
+
 - Python 3.12
-- A Google API key (for Gemini)
-- A weather data source (or stubbed responses for testing)
-- A Flyte account — sign up free at https://flyte.org
+- Docker
+- Flyte CLI
+- Git
 
-## Setup
+You also need:
 
-### 1. Spin up a Flyte Devbox
-Sign in at flyte.org and launch a new devbox. Clone the repo inside it.
+- Gemini API key from Google AI Studio
 
-### 2. Install dependencies
+Get API key:
+
+https://aistudio.google.com/app/apikey
+
+---
+
+# Installation
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/khangesh9420/Weather_Agent.git
+
+cd Weather_Agent
+```
+
+---
+
+## 2. Create Virtual Environment
+
+```bash
+python3 -m venv flyte-env
+
+source flyte-env/bin/activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-### 3. Set environment variables
-export GOOGLE_API_KEY="your-key-here"
+---
 
-### 4. Run the agent
-python main.py
+# Flyte Setup
 
-## How It Works
-1. User submits a query like "What's the weather in Bochum?"
-2. main.py invokes the compiled LangGraph workflow
-3. The LLM node (Gemini) inspects the query and the tool schema
-4. If a weather lookup is needed, it emits a tool call
-5. The tool node runs weather_tool.py and returns structured data
-6. Gemini incorporates the result and returns a natural-language answer
+## 1. Start Flyte Devbox
 
-## Key Concepts Demonstrated
-- LangGraph StateGraph for explicit agent control flow
-- Tool calling with Gemini via the Google Generative AI SDK
-- Clean separation of graph / tools / utils for testability
-- Cloud-native development with Flyte Devbox
+```bash
+flyte start devbox
+```
 
-## Next Steps
-- Add conversation memory across turns
-- Multi-tool routing (current weather, forecast, alerts)
-- Deploy as a FastAPI endpoint
-- Add observability with AgentOps or LangSmith
+---
 
-## References
-- Flyte: https://flyte.org
-- LangGraph: https://langchain-ai.github.io/langgraph/
-- Gemini API: https://ai.google.dev
+## 2. Create Flyte Config
+
+```bash
+flyte create config \
+    --endpoint localhost:30080 \
+    --project flytesnacks \
+    --domain development \
+    --builder local \
+    --insecure
+```
+
+---
+
+# Environment Variables
+
+Export your Gemini API key:
+
+```bash
+export GOOGLE_GEMINI_API_KEY="your_actual_api_key"
+```
+
+Verify:
+
+```bash
+echo $GOOGLE_GEMINI_API_KEY
+```
+
+---
+
+# Running the Agent
+
+## Run Locally
+
+```bash
+python3 main.py --prompt "weather in Berlin"
+```
+
+---
+
+## Run Using Flyte
+
+```bash
+flyte run main.py flyte_weather_agent \
+    --prompt "weather in Berlin"
+```
+
+---
+
+# Example Output
+
+```text
+Weather forecast for Berlin on 2026-05-10:
+
+2026-05-10T00:00: 14°C
+2026-05-10T01:00: 13°C
+2026-05-10T02:00: 12°C
+...
+```
+
+---
+
+# Key Concepts Demonstrated
+
+- Agentic AI workflows
+- Tool calling with LLMs
+- LangGraph conditional routing
+- External API integration
+- Flyte task orchestration
+- Containerized execution
+- Production-ready project structure
+
+---
+
+# Future Improvements
+
+- Multi-tool agents
+- Conversation memory
+- Streaming responses
+- FastAPI deployment
+- Observability with LangSmith / AgentOps
+- Kubernetes deployment
+- Scheduled Flyte workflows
+
+---
+
+# Useful Commands
+
+## Check Flyte Devbox
+
+```bash
+flyte status
+```
+
+---
+
+## Restart Flyte Devbox
+
+```bash
+flyte stop
+
+flyte start devbox
+```
+
+---
+
+## Verify Docker
+
+```bash
+docker --version
+```
+
+---
+
+## Verify Buildx
+
+```bash
+docker buildx version
+```
+
+---
+
+# References
+
+Flyte Documentation:
+https://flyte.org
+
+LangGraph Documentation:
+https://langchain-ai.github.io/langgraph/
+
+Gemini API Documentation:
+https://ai.google.dev
+
+Open-Meteo API:
+https://open-meteo.com
+
 
 <img width="614" height="551" alt="weather_agent_flyte" src="https://github.com/user-attachments/assets/146a8d53-00bd-4123-b0c1-8ac5e8f25457" />
 
