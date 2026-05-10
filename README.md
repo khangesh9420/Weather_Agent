@@ -69,3 +69,6 @@ python main.py
 - Flyte: https://flyte.org
 - LangGraph: https://langchain-ai.github.io/langgraph/
 - Gemini API: https://ai.google.dev
+
+<img width="614" height="551" alt="weather_agent_flyte" src="https://github.com/user-attachments/assets/146a8d53-00bd-4123-b0c1-8ac5e8f25457" />
+
