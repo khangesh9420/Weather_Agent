@@ -72,3 +72,19 @@ python main.py
 
 <img width="614" height="551" alt="weather_agent_flyte" src="https://github.com/user-attachments/assets/146a8d53-00bd-4123-b0c1-8ac5e8f25457" />
 
+## Handson
+<img width="2517" height="565" alt="flyte_01" src="https://github.com/user-attachments/assets/fb2b864b-6cba-4aa9-aa69-6f4f47e92e68" />
+--------------------------------------------------------------------------------------------------------------------------------------
+<img width="2507" height="371" alt="flyte-02" src="https://github.com/user-attachments/assets/899f9959-7843-4e37-af41-62abfd008d16" />
+--------------------------------------------------------------------------------------------------------------------------------------
+<img width="2459" height="1022" alt="flyte-03" src="https://github.com/user-attachments/assets/1ad1e98b-e406-44ae-b377-0630b8663f6c" />
+--------------------------------------------------------------------------------------------------------------------------------------
+<img width="1478" height="299" alt="flyte-04" src="https://github.com/user-attachments/assets/54f80bbb-7b43-47f6-bf70-d8508684247e" />
+--------------------------------------------------------------------------------------------------------------------------------------
+<img width="1234" height="600" alt="flyte-05" src="https://github.com/user-attachments/assets/84fcec6e-6023-4fa4-aecf-d6bf08752a40" />
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
